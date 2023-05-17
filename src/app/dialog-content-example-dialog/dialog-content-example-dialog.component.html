@@ -1,0 +1,30 @@
+<!-- <mat-dialog-actions align="end">
+<button class="x" mat-raised-button mat-dialog-close >X</button>
+</mat-dialog-actions> -->
+<!-- <br> -->
+<h3 mat-dialog-title >Generate Report</h3>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="column" class="flex" >
+    <div >
+      <h4>Select the columns to  hide:</h4>
+      <p><mat-checkbox formControlName="id">Id</mat-checkbox></p>
+      <p><mat-checkbox formControlName="country">Country</mat-checkbox></p>
+      <p><mat-checkbox formControlName="index">Index</mat-checkbox></p>
+      <p><mat-checkbox formControlName="capital">Capital</mat-checkbox></p>
+    </div>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Download</mat-label>
+        <mat-select formControlName="downloadType">
+          <mat-option *ngFor="let document of documents" [value]="document.viewValue">
+            {{ document.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" [mat-dialog-close]="excludeColumnNameWithDownloadType" cdkFocusInitial [disabled]="column.invalid">Genrate Report</button>
+  <button mat-raised-button mat-dialog-close>close</button>
+</mat-dialog-actions>

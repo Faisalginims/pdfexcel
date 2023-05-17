@@ -1,0 +1,23 @@
+<div align="end">
+  <button mat-raised-button color="warn" (click)="openDialog()">Generate Report</button>
+</div>
+<br>
+<br>
+<table datatable [dtOptions]="tableData" class="row-border hover" id="my-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Country</th>
+      <th>Index</th>
+      <th>Capital</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let column of tableData" >
+      <td>{{ column.id }}</td>
+      <td>{{ column.country }}</td>
+      <td>{{ column.index }}</td>
+      <td>{{ column.capital }}</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,45 @@
+table {
+  width: 100%;
+}
+table {
+  margin-left: 10px;
+  width: 100%;
+}
+tr:hover{
+  background-color: rgb(221, 218, 218);
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td,
+th {
+  width: 25%;
+}
+
+p {
+  font-family: lato;
+}
+
+mat-checkbox {
+  margin: 1rem;
+}
+
+mat-table {
+  margin-top: 1rem;
+}
+
+.example-button-row button,
+.example-button-row a {
+  margin-right: 8px;
+}
+
+.example-disabled {
+  display: inline-block;
+}
+
+mat-form-field {
+  margin-left: 10px;
+}

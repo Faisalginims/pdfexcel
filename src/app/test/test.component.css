@@ -1,0 +1,40 @@
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+.btn{
+  width: 100px;
+  height: 50px;
+  background-color: brown;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  color: aliceblue;
+}
+.btn:hover{
+  background-color: rgb(68, 0, 255);
+  color: white;
+}
+table {
+  width: 100%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td,
+th {
+  width: 25%;
+}
+p{
+  font-family: lato;
+}
+mat-checkbox{
+  margin: 1rem;
+}
+mat-table{
+  margin-top: 1rem;
+}
+
