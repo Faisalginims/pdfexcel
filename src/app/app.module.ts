@@ -14,17 +14,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DataTablesModule } from 'angular-datatables';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TestComponent } from './test/test.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DialogContentExampleDialogComponent } from './dialog-content-example-dialog/dialog-content-example-dialog.component';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClientModule } from '@angular/common/http';
 import {MatButtonModule} from '@angular/material/button';
-import { MultiFilterComponent } from './multi-filter/multi-filter.component';
-import {MatSliderModule} from '@angular/material/slider';
-import {MatTreeModule} from '@angular/material/tree';
 import {MatIconModule} from '@angular/material/icon';
-import { TreeComponent } from './tree/tree.component';
 
 
 @NgModule({
@@ -32,10 +27,7 @@ import { TreeComponent } from './tree/tree.component';
     AppComponent,
     DataTableComponent,
     MatTableComponent,
-    TestComponent,
     DialogContentExampleDialogComponent,
-    MultiFilterComponent,
-    TreeComponent,
   ], entryComponents: [DialogContentExampleDialogComponent],
   imports: [
     BrowserModule,
@@ -53,8 +45,6 @@ import { TreeComponent } from './tree/tree.component';
     MatCardModule,
     HttpClientModule,
     MatButtonModule,
-    MatSliderModule,
-    MatTreeModule,
     MatIconModule,
   ],
   providers: [],

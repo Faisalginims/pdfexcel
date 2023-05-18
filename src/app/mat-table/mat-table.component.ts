@@ -1,14 +1,13 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { jsPDF } from "jspdf";
-import autoTable, { Column } from "jspdf-autotable";
-import * as XLSX from "xlsx";
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import * as XLSX from 'xlsx';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogContentExampleDialogComponent } from './../dialog-content-example-dialog/dialog-content-example-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { MultiFilterComponent } from "./../multi-filter/multi-filter.component";
 
-interface PeriodicElement {
+interface CountryData {
   id: number;
   country: string;
   index: number;
@@ -18,23 +17,22 @@ interface PeriodicElement {
 @Component({
   selector: 'app-mat-table',
   templateUrl: './mat-table.component.html',
-  styleUrls: ['./mat-table.component.css']
+  styleUrls: ['./mat-table.component.css'],
 })
-
 export class MatTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  tableDataSourceList = new MatTableDataSource<PeriodicElement>();
-  fileName = 'ExcelSheet.xlsx'
-  searchText: string = ''
+  tableDataSourceList = new MatTableDataSource<CountryData>();
+  fileName = 'ExcelSheet.xlsx';
+  searchText: string = '';
   displayedColumns: string[] = ['id', 'country', 'index', 'capital'];
   constHideColumns: any[] = [];
 
   columnDefinitions = [
-    { def: 'id', label: 'ID', hide: true },
+    { def: 'id', label: 'ID', hide: false },
     { def: 'country', label: 'country', hide: false },
     { def: 'index', label: 'index', hide: false },
-    { def: 'capital', label: 'capital', hide: false }
-  ]
+    { def: 'capital', label: 'capital', hide: false },
+  ];
 
   constructor(public dialog: MatDialog) {
     this.tableDataSourceList.data = [
@@ -62,33 +60,30 @@ export class MatTableComponent implements OnInit, AfterViewInit {
     ];
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   getDisplayedColumns() {
-    const col = this.columnDefinitions.filter(cd => !cd.hide).map(cd => cd.def)
-    return this.constHideColumns = [col]
+    const col = this.columnDefinitions
+      .filter((cd) => !cd.hide)
+      .map((cd) => cd.def);
+    return (this.constHideColumns = [col]);
+  }
+
+  getDisplayedExcel() {
+    return this.columnDefinitions.filter((cd) => !cd.hide).map((cd) => cd.def);
   }
 
   openDialog() {
     const dialogRef = this.dialog.open(DialogContentExampleDialogComponent, {
       width: '70%',
-      height: '50%'
+      height: '50%',
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.hideColumns(result)
+      this.hideColumns(result);
       this.printTable(result.downloadType);
     });
   }
 
-  openDialogFilter() {
-    const dialogRef = this.dialog.open(MultiFilterComponent, {
-      width: '70%',
-      height: '50%'
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-    });
-  }
 
   hideColumns(data: any) {
     const { id, country, index, capital } = data;
@@ -109,11 +104,11 @@ export class MatTableComponent implements OnInit, AfterViewInit {
         default:
           break;
       }
-    })
+    });
   }
 
   ngAfterViewInit(): void {
-    this.tableDataSourceList.paginator = this.paginator
+    this.tableDataSourceList.paginator = this.paginator;
   }
 
   applyFilter(event: Event) {
@@ -126,35 +121,43 @@ export class MatTableComponent implements OnInit, AfterViewInit {
     if (exportType === 'PDF') {
       this.exportPdf(filteredData);
     } else if (exportType === 'EXCEL') {
-      this.exportXlsx();
+      this.exportXlsx(filteredData);
     }
   }
 
   getFilteredData() {
-    return this.tableDataSourceList.data.filter((data: any) => {
-      const s = `${data.id} ${data.country} ${data.index} ${data.capital}`
-      return s.toLowerCase().includes(this.searchText.toLowerCase())
-    }).map((data: any) => {
-      const row: string[] = Object.values(data);
-      return row;
-    })
+    const filteredData = this.tableDataSourceList.data.filter(
+      (filteredItem) => {
+        const s = `${filteredItem.id} ${filteredItem.country} ${filteredItem.index} ${filteredItem.capital}`;
+        return s.toLowerCase().includes(this.searchText.toLowerCase());
+        // const s = filteredItem.map(item => String(item)).join(' ');
+        // return s.toLowerCase().includes(this.searchText.toLowerCase());
+      }
+    );
+
+    const [displayedColumns] = this.getDisplayedColumns();
+
+    const fianlDataToExtract = filteredData.map((data) => {
+      return this.extractValues(data, displayedColumns);
+    });
+
+    return fianlDataToExtract;
   }
 
-  exportXlsx() {
+  extractValues(data: any, keys: string[]): any[] {
+    const extractedData: any[] = [];
+    keys.forEach((key) => {
+      if (data.hasOwnProperty(key)) {
+        extractedData.push(data[key]);
+      }
+    });
+    return extractedData;
+  }
 
-    const clonedData = this.tableDataSourceList.data.map((item) => {
-      const clonedItem: PeriodicElement = { ...item }
-      this.constHideColumns.forEach((column) => {
-        delete clonedItem[column as keyof PeriodicElement]
-        return clonedItem
-      })
-    })
+  exportXlsx(body: any) {
+    const headers = this.getDisplayedExcel();
 
-
-
-
-    // const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(document.getElementById('my-table'));
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.getDisplayedColumns());
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([headers, ...body]);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     XLSX.writeFile(wb, this.fileName);
@@ -162,12 +165,11 @@ export class MatTableComponent implements OnInit, AfterViewInit {
 
   exportPdf(body: any) {
     const doc = new jsPDF('l', 'mm', 'a4');
-    const head = this.getDisplayedColumns()
-    console.log(head);
+    const head = this.getDisplayedColumns();
     autoTable(doc, {
       head: head,
       body: body,
-      didDrawCell: (tableDataSourceList) => { },
+      didDrawCell: (tableDataSourceList) => {},
     });
     doc.save('table.pdf');
   }

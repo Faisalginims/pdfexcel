@@ -18,47 +18,62 @@ export class DataTableComponent implements OnInit {
   constHideColumns: any[] = [];
 
   columnDefinitions = [
-    { def: 'id', hide: false },
-    { def: 'country', hide: false },
-    { def: 'index', hide: false },
-    { def: 'capital', hide: false }
-  ]
+    { def: 'id', label: 'ID', hide: false },
+    { def: 'country', label: 'country', hide: false },
+    { def: 'index', label: 'index', hide: false },
+    { def: 'capital', label: 'capital', hide: false },
+  ];
   constructor(public dialog: MatDialog) {
-    this.tableData = [
+    this.tableData =[
       { id: 1, country: 'Finland', index: 7.632, capital: 'Helsinki' },
       { id: 2, country: 'Norway', index: 7.594, capital: 'Oslo' },
       { id: 3, country: 'Denmark', index: 7.555, capital: 'Copenhagen' },
       { id: 4, country: 'Iceland', index: 7.495, capital: 'Reykjavík' },
       { id: 5, country: 'Switzerland', index: 7.487, capital: 'Bern' },
-      { id: 9, country: 'Sweden', index: 7.314, capital: 'Stockholm' },
-      { id: 73, country: 'Belarus', index: 5.483, capital: 'Minsk' },
-      { id: 1, country: 'Finland', index: 7.632, capital: 'Helsinki' },
-      { id: 2, country: 'Norway', index: 7.594, capital: 'Oslo' },
-      { id: 3, country: 'Denmark', index: 7.555, capital: 'Copenhagen' },
-      { id: 4, country: 'Iceland', index: 7.495, capital: 'Reykjavík' },
-      { id: 5, country: 'Switzerland', index: 7.487, capital: 'Bern' },
-      { id: 9, country: 'Sweden', index: 7.314, capital: 'Stockholm' },
-      { id: 73, country: 'Belarus', index: 5.483, capital: 'Minsk' },
+      { id: 6, country: 'Sweden', index: 7.314, capital: 'Stockholm' },
+      { id: 7, country: 'Belarus', index: 5.483, capital: 'Minsk' },
+      { id: 8, country: 'Finland', index: 7.632, capital: 'Helsinki' },
+      { id: 9, country: 'Norway', index: 7.594, capital: 'Oslo' },
+      { id: 10, country: 'Denmark', index: 7.555, capital: 'Copenhagen' },
+      { id: 11, country: 'Iceland', index: 7.495, capital: 'Reykjavík' },
+      { id: 12, country: 'Switzerland', index: 7.487, capital: 'Bern' },
+      { id: 13, country: 'Sweden', index: 7.314, capital: 'Stockholm' },
+      { id: 14, country: 'Belarus', index: 5.483, capital: 'Minsk' },
+      { id: 15, country: 'Finland', index: 7.632, capital: 'Helsinki' },
+      { id: 16, country: 'Norway', index: 7.594, capital: 'Oslo' },
+      { id: 17, country: 'Denmark', index: 7.555, capital: 'Copenhagen' },
+      { id: 18, country: 'Iceland', index: 7.495, capital: 'Reykjavík' },
+      { id: 19, country: 'Switzerland', index: 7.487, capital: 'Bern' },
+      { id: 20, country: 'Sweden', index: 7.314, capital: 'Stockholm' },
+      { id: 21, country: 'Belarus', index: 5.483, capital: 'Minsk' },
     ]
-
   }
   ngOnInit(): void {
 
 
   }
   getDisplayedColumns() {
-    const col = this.columnDefinitions.filter(cd => !cd.hide).map(cd => cd.def)
-    return this.constHideColumns = [col]
+    const col = this.columnDefinitions
+      .filter((cd) => !cd.hide)
+      .map((cd) => cd.def);
+    return (this.constHideColumns = [col]);
   }
+
+  getDisplayedExcel() {
+    return this.columnDefinitions.filter((cd) => !cd.hide).map((cd) => cd.def);
+  }
+
   openDialog() {
     const dialogRef = this.dialog.open(DialogContentExampleDialogComponent, {
-      width: '750px'
+      width: '70%',
+      height: '50%',
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.hideColumns(result)
+      this.hideColumns(result);
       this.printTable(result.downloadType);
     });
   }
+  
   printTable(exportType: string) {
     const filteredData = this.getFilteredData();
     if (exportType === 'PDF') {
