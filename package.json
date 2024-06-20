@@ -27,7 +27,7 @@
     "datatables.net-dt": "^1.13.4",
     "jquery": "^3.7.0",
     "jspdf": "^2.5.1",
-    "jspdf-autotable": "^3.5.28",
+    "jspdf-autotable": "^3.8.2",
     "jszip": "^3.10.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
